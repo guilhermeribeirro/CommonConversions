@@ -1,15 +1,27 @@
 ﻿using CommonConversions.Application.Services;
+using CommonConversions.Core.Interfaces;
+using Moq;
 
 namespace CommonConversions.Application.UnitTests.Services;
 
 public class ConversionServiceTests
 {
+    private readonly Mock<IConvertHistoryRepository> _repositoryMock;
+    private readonly ConversionService _service;
 
+
+    public ConversionServiceTests()
+    {
+
+        _repositoryMock = new Mock<IConvertHistoryRepository>();
+        _service = new ConversionService(_repositoryMock.Object);
+    }
     [Fact]
+   
     public void CelsiusToFahrenheit_ShouldConvertCorrectly()
     {
         // Arrange
-        var service = new ConversionService();
+        var service = new ConversionService(_repositoryMock.Object);
         double input = 0;
 
         // Act
@@ -19,11 +31,12 @@ public class ConversionServiceTests
         Assert.Equal(32, result);
     }
 
+
     [Fact]
     public void KilometersToMiles_ShouldConvertCorrectly()
     {
         // Arrange
-        var service = new ConversionService();
+        var service = new ConversionService(_repositoryMock.Object);
 
         // Act
         double result = service.KilometersToMiles(1);
@@ -36,7 +49,7 @@ public class ConversionServiceTests
     public void KilogramsToPounds_ShouldConvertCorrectly()
     {
         // Arrange
-        var service = new ConversionService();
+        var service = new ConversionService(_repositoryMock.Object);
 
         // Act
         double result = service.KilogramsToPounds(1);
